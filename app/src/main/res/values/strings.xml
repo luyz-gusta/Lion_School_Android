@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Lion School</string>
+    <string name="logo_name">Lion School</string>
+    <string name="welcome"> Welcome to Lion School </string>
+    <string name="title_activity_courses">CoursesActivity</string>
+    <string name="lets_go">Let’s Go</string>
+    <string name="text_outlined">Find your course:</string>
+    <string name="courses">Courses:</string>
+</resources>
