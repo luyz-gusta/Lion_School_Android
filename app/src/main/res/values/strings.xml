@@ -6,4 +6,7 @@
     <string name="lets_go">Let’s Go</string>
     <string name="text_outlined">Find your course:</string>
     <string name="courses">Courses:</string>
+    <string name="title_activity_students">StudentsActivity</string>
+    <string name="title_activity_header">Header</string>
+    <string name="text_outlined_year">find your student by year:</string>
 </resources>
