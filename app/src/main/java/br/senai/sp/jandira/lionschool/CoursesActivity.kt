@@ -23,7 +23,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +34,6 @@ import coil.compose.AsyncImage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.logging.Filter
 
 class CoursesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +57,7 @@ fun CoursesScreen() {
         mutableStateOf(listOf<Curso>( ))
     }
 
-    var context = LocalContext.current
+    val context = LocalContext.current
 
     // Cria uma chamada para o endpoint
     val call = RetrofitFactory().getCursosService().getCursos()
@@ -197,8 +195,8 @@ fun CoursesScreen() {
                                 .padding(horizontal = 20.dp, vertical = 10.dp)
                                 .clickable {
                                     val openStudents = Intent(context, StudentsActivity::class.java)
-                                    openStudents.putExtra("Curso", "${it.sigla}")
-                                    openStudents.putExtra("NomeCurso", "${it.nome}")
+                                    openStudents.putExtra("sigla", it.sigla)
+                                    openStudents.putExtra("nome", it.nome)
                                     context.startActivity(openStudents)
                                 },
                             verticalArrangement = Arrangement.SpaceBetween
