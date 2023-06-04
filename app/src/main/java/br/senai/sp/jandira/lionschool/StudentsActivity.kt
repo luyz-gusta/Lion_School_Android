@@ -1,10 +1,12 @@
 package br.senai.sp.jandira.lionschool
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -174,7 +176,12 @@ fun Studentscreen(curso:String, nomeCurso: String) {
                     Card(
                         modifier = Modifier
                             .height(220.dp)
-                            .width(200.dp),
+                            .width(200.dp)
+                            .clickable {
+                                val openStudentsGrade = Intent(context, StudentGradeActivity::class.java)
+                                openStudentsGrade.putExtra("matricula", it.matricula)
+                                context.startActivity(openStudentsGrade)
+                            },
                         shape = RoundedCornerShape(15.dp),
                         backgroundColor = cor
                     ) {
