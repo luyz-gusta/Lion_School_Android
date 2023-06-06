@@ -91,6 +91,8 @@ fun StudentGradeScreen(matricula: String) {
 
     })
 
+    Log.i("tag", "StudentGradeScreen: ${aluno}")
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -140,11 +142,11 @@ fun StudentGradeScreen(matricula: String) {
                 Card(
                     modifier = Modifier
                         .width(260.dp)
-                        .height(380.dp),
+                        .height(320.dp),
                     shape = RoundedCornerShape(10.dp),
                     backgroundColor = colorResource(id = R.color.white)
                 ) {
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(30.dp))
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(), 
                         horizontalAlignment = Alignment.CenterHorizontally
