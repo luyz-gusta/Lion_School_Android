@@ -1,6 +1,5 @@
 package br.senai.sp.jandira.lionschool.component
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
@@ -19,9 +18,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.lionschool.CoursesActivity
+import br.senai.sp.jandira.lionschool.R
+import br.senai.sp.jandira.lionschool.StudentsActivity
 
 @Composable
-fun HeaderScreen(context: Context) {
+fun HeaderStudents(context: Context) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,27 +40,27 @@ fun HeaderScreen(context: Context) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = br.senai.sp.jandira.lionschool.R.drawable.logo_image),
+                    painter = painterResource(id = R.drawable.logo_image),
                     contentDescription = "",
                     modifier = Modifier
                         .width(50.dp)
                         .height(60.dp)
                 )
                 Text(
-                    text = stringResource(id = br.senai.sp.jandira.lionschool.R.string.logo_name),
+                    text = stringResource(id = R.string.logo_name),
                     modifier = Modifier.width(64.dp),
-                    color = colorResource(id = br.senai.sp.jandira.lionschool.R.color.blue_default),
+                    color = colorResource(id = R.color.blue_default),
                     fontSize = 20.sp,
                     fontWeight = FontWeight(700)
                 )
             }
             Icon(
-                painter = painterResource(id = br.senai.sp.jandira.lionschool.R.drawable.baseline_keyboard_double_arrow_left_24),
+                painter = painterResource(id = R.drawable.baseline_keyboard_double_arrow_left_24),
                 contentDescription = "",
-                tint = colorResource(id = br.senai.sp.jandira.lionschool.R.color.blue_default),
+                tint = colorResource(id = R.color.blue_default),
                 modifier = Modifier.size(60.dp)
                     .clickable {
-                        var openCourses = Intent(context, CoursesActivity::class.java)
+                        var openCourses = Intent(context, StudentsActivity::class.java)
                         context.startActivity(openCourses)
                     }
             )
@@ -68,7 +69,7 @@ fun HeaderScreen(context: Context) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp)
-                .background(colorResource(id = br.senai.sp.jandira.lionschool.R.color.yellow_default))
+                .background(colorResource(id = R.color.yellow_default))
         )
     }
 }

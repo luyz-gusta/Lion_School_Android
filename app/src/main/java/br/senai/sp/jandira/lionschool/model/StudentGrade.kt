@@ -5,12 +5,5 @@ data class StudentGrade(
     var foto: String,
     var matricula: String,
     var status: String,
-    var sexo: String,
-    var curso: String,
-    var dataConclusao: String,
-    var nomeCurso: String,
-    var sigla: String,
-    var icone: String,
-    var conclusao: String,
     var disciplinas: List<Disciplina>
 )

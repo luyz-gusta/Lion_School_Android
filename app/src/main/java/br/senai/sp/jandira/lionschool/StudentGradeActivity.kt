@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Surface
@@ -29,14 +30,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.lionschool.component.HeaderScreen
-import br.senai.sp.jandira.lionschool.model.CursoList
+import br.senai.sp.jandira.lionschool.model.Student
 import br.senai.sp.jandira.lionschool.model.StudentGrade
 import br.senai.sp.jandira.lionschool.service.RetrofitFactory
 import br.senai.sp.jandira.lionschool.ui.theme.LionSchoolTheme
+import coil.compose.AsyncImage
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
-import java.util.Objects
+import javax.security.auth.callback.Callback
 
 class StudentGradeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,28 +56,40 @@ class StudentGradeActivity : ComponentActivity() {
 fun StudentGradeScreen(matricula: String) {
     val context = LocalContext.current
 
-//    var alunoNotas by remember {
-//        mutableStateOf(listOf<StudentGrade>( ))
-//    }
-//
-//    // Cria uma chamada para o endpoint
-//    val call = RetrofitFactory().getAlunosService().getAlunosByMatricula(matricula)
-//
-//    // Executar a chamada
-//    call.enqueue(object  : Callback<StudentGrade> {
-//        override fun onResponse(
-//            call: Call<StudentGrade>,
-//            response: Response<StudentGrade>
-//        ) {
-////            alunoNotas = response.body()!!.disciplinas
-//        }
-//
-//        override fun onFailure(call: Call<CursoList>, t: Throwable) {
-//            Log.i("curso", "onFailure: ${t.message}")
-//
-//        }
-//
-//    })
+    var aluno by remember {
+        mutableStateOf(StudentGrade(
+            "",
+            "",
+            "",
+            "",
+            emptyList()
+        ))
+    }
+
+    // Cria uma chamada para o endpoint
+    val call = RetrofitFactory().getAlunosService().getAlunosByMatricula(matricula)
+
+    // Executar a chamada
+    call.enqueue(object : retrofit2.Callback<StudentGrade> {
+        override fun onResponse(
+            call: Call<StudentGrade>,
+            response: Response<StudentGrade>
+        ) {
+          if (response.isSuccessful){
+              val studentResponse = response.body()
+              if (studentResponse != null){
+                  aluno = studentResponse
+              }
+          }else{
+              Log.e("teste", "Erro na resposta da API: ${response.code()}")
+          }
+        }
+
+        override fun onFailure(call: Call<StudentGrade>, t: Throwable) {
+            Log.i("teste", "onFailure: ${t.message} ")
+        }
+
+    })
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -89,21 +102,29 @@ fun StudentGradeScreen(matricula: String) {
         ) {
             HeaderScreen(context = context)
             Spacer(modifier = Modifier.height(10.dp))
+
+            var cor = colorResource(id = R.color.blue_default)
+
+            if (aluno.status == "Cursando")
+                cor = colorResource(id = R.color.blue_default)
+            else
+                cor = colorResource(id = R.color.yellow_default)
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(shape = RoundedCornerShape(15.dp))
-                    .background(color = colorResource(id = R.color.blue_default)),
+                    .background(color = cor),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceAround
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.person),
+                AsyncImage(
+                    model = aluno.foto,
                     contentDescription = "",
                     modifier = Modifier.size(200.dp)
                 )
                 Text(
-                    text = "HÉLIDA BENTO DE OLIVEIRA LINS",
+                    text = aluno.nome,
                     color = colorResource(id = R.color.white),
                     fontWeight = FontWeight(500),
                     fontSize = 20.sp,
@@ -113,18 +134,75 @@ fun StudentGradeScreen(matricula: String) {
                             color = Color.Black,
                             offset = Offset(0f, 4f),
                         )
-                    )
+                    ),
+                    modifier = Modifier.width(225.dp)
                 )
                 Card(
                     modifier = Modifier
                         .width(260.dp)
-                        .height(380.dp)
-                        .padding(8.dp, 9.dp),
+                        .height(380.dp),
                     shape = RoundedCornerShape(10.dp),
                     backgroundColor = colorResource(id = R.color.white)
                 ) {
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(), 
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        items(aluno.disciplinas){
+                            var barra = 2.4 * it.media.toDouble()
+                            var corBarra = colorResource(id = R.color.blue_default)
 
+                            if (it.media.toDouble() > 60){
+                                corBarra = colorResource(id = R.color.blue_default)
+                            }else if (it.media.toDouble() < 60 && it.media.toDouble() > 50){
+                                corBarra = colorResource(id = R.color.yellow_default)
+                            }else{
+                                corBarra = Color.Red
+                            }
+
+                            Column(modifier = Modifier
+                                .width(240.dp)
+                                .height(40.dp)
+                            ) {
+                                Text(
+                                    text = it.nomeDisciplina,
+                                    fontWeight = FontWeight(700),
+                                    fontSize = 12.sp,
+                                    color = colorResource(id = R.color.black)
+                                )
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Box(
+                                    modifier = Modifier
+                                        .height(17.5.dp)
+                                        .width(240.dp)
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .background(
+                                            colorResource(id = R.color.second_blue)
+                                        )
+                                ){
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxHeight()
+                                            .clip(RoundedCornerShape(10.dp))
+                                            .background(
+                                                corBarra
+                                            )
+                                            .width(barra.dp)
+                                            .padding(0.dp, 0.dp, 5.dp, 0.dp),
+                                        contentAlignment = Alignment.CenterEnd
+                                    ){
+                                        Text(
+                                            text = it.media + "%",
+                                            fontWeight = FontWeight(700),
+                                            fontSize = 12.sp,
+                                            color = colorResource(id = R.color.white)
+                                        )
+                                    }
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(15.dp))
+                        }
                     }
                 }
             }

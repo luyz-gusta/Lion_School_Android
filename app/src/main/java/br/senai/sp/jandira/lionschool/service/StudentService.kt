@@ -1,6 +1,7 @@
 package br.senai.sp.jandira.lionschool.service
 
 import br.senai.sp.jandira.lionschool.model.Student
+import br.senai.sp.jandira.lionschool.model.StudentGrade
 import br.senai.sp.jandira.lionschool.model.StudentList
 import retrofit2.Call
 import retrofit2.http.GET
@@ -16,5 +17,5 @@ interface StudentService {
     fun getAlunosByCurso(@Query("curso") curso: String): Call<StudentList>
 
     @GET("alunos/{matricula}")
-    fun getAlunosByMatricula(@Path("matricula") matricula: String): Call<Student>
+    fun getAlunosByMatricula(@Path("matricula") matricula: String): Call<StudentGrade>
 }
