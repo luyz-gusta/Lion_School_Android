@@ -117,10 +117,14 @@ fun Studentscreen(curso:String, nomeCurso: String) {
 
     }
 
+    var listaStudents = listaAlunos
+
     fun filterByYear (ano: String) {
         var listaNova = listaAlunos.filter { it.dataConclusao == "$ano" }
         if(!listaNova.isEmpty()){
-            listaAlunos = listaNova
+            listaStudents = listaNova
+        }else if(ano == ""){
+            listaStudents = listaAlunos
         }
     }
 
@@ -200,11 +204,12 @@ fun Studentscreen(curso:String, nomeCurso: String) {
                         unfocusedBorderColor = colorResource(id = R.color.blue_default),
                         backgroundColor = colorResource(id = R.color.second_blue),
                         cursorColor = colorResource(id = R.color.blue_default)
-                    )
+                    ),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
             }
             LazyColumn(){
-                items(listaAlunos){
+                items(listaStudents){
                     var cor = colorResource(id = R.color.blue_default)
 
                     if (it.status == "Cursando")

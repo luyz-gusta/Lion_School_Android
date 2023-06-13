@@ -78,6 +78,7 @@ fun CoursesScreen() {
     })
 
     var listaCards = listaCursos
+
     fun filterByName (name: String) {
 
         var listaNova = listaCursos.filter {
