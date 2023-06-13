@@ -18,4 +18,7 @@ interface StudentService {
 
     @GET("alunos/{matricula}")
     fun getAlunosByMatricula(@Path("matricula") matricula: String): Call<StudentGrade>
+
+    @GET("alunos")
+    fun getAlunosByCursoStatus(@Query("curso") curso: String, @Query("status") status: String): Call<StudentList>
 }

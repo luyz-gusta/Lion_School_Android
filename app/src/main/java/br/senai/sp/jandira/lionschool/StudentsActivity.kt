@@ -64,23 +64,55 @@ fun Studentscreen(curso:String, nomeCurso: String) {
 
     val context = LocalContext.current
 
-    // Cria uma chamada para o endpoint
-    val call = RetrofitFactory().getAlunosService().getAlunosByCurso(curso)
+    fun changeStudentStatus(status: String){
+        // Cria uma chamada para o endpoint
+        val call = RetrofitFactory().getAlunosService().getAlunosByCursoStatus(curso, status)
 
-    // Executar a chamada
-    call.enqueue(object  : Callback<StudentList> {
-        override fun onResponse(
-            call: Call<StudentList>,
-            response: Response<StudentList>
-        ) {
-            listaAlunos = response.body()!!.informacoes
+        // Executar a chamada
+        call.enqueue(object  : Callback<StudentList> {
+            override fun onResponse(
+                call: Call<StudentList>,
+                response: Response<StudentList>
+            ) {
+                listaAlunos = response.body()!!.informacoes
+            }
+
+            override fun onFailure(call: Call<StudentList>, t: Throwable) {
+                Log.i("curso", "onFailure: ${t.message}")
+
+            }
+        })
+    }
+
+    LaunchedEffect(selectedOption){
+        if (selectedOption == 1){
+            // Cria uma chamada para o endpoint
+            val call = RetrofitFactory().getAlunosService().getAlunosByCurso(curso)
+
+            // Executar a chamada
+            call.enqueue(object  : Callback<StudentList> {
+                override fun onResponse(
+                    call: Call<StudentList>,
+                    response: Response<StudentList>
+                ) {
+                    listaAlunos = response.body()!!.informacoes
+                }
+
+                override fun onFailure(call: Call<StudentList>, t: Throwable) {
+                    Log.i("curso", "onFailure: ${t.message}")
+
+                }
+            })
+        }else{
+            val status = when (selectedOption){
+                2 -> "Cursando"
+                3 -> "Finalizado"
+                else -> "Todos"
+            }
+            changeStudentStatus(status)
         }
 
-        override fun onFailure(call: Call<StudentList>, t: Throwable) {
-            Log.i("curso", "onFailure: ${t.message}")
-
-        }
-    })
+    }
 
 
     Surface(
@@ -175,7 +207,8 @@ fun Studentscreen(curso:String, nomeCurso: String) {
                             .height(220.dp)
                             .width(200.dp)
                             .clickable {
-                                val openStudentsGrade = Intent(context, StudentGradeActivity::class.java)
+                                val openStudentsGrade =
+                                    Intent(context, StudentGradeActivity::class.java)
                                 openStudentsGrade.putExtra("matricula", it.matricula)
                                 context.startActivity(openStudentsGrade)
                             },
