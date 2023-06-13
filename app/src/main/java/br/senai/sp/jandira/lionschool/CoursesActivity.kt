@@ -75,8 +75,21 @@ fun CoursesScreen() {
             Log.i("curso", "onFailure: ${t.message}")
 
         }
-
     })
+
+    var listaCards = listaCursos
+    fun filterByName (name: String) {
+
+        var listaNova = listaCursos.filter {
+            val regex = Regex(name, RegexOption.IGNORE_CASE)
+            it.nome.contains(regex)
+        }
+        if(!listaNova.isEmpty()){
+            listaCards = listaNova
+        }else if(name == ""){
+            listaCards = listaCursos
+        }
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -125,6 +138,8 @@ fun CoursesScreen() {
                 value = nameCourseState,
                 onValueChange = {
                     nameCourseState = it
+
+                    filterByName(it)
                 },
                 modifier = Modifier
                     .width(320.dp)
@@ -177,7 +192,7 @@ fun CoursesScreen() {
                     )
                 }
                 LazyColumn(){
-                    items(listaCursos){
+                    items(listaCards){
                         Spacer(modifier = Modifier.height(32.dp))
                         Column(
                             modifier = Modifier

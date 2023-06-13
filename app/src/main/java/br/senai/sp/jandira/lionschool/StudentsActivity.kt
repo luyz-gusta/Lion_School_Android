@@ -124,6 +124,7 @@ fun Studentscreen(curso:String, nomeCurso: String) {
         }
     }
 
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
